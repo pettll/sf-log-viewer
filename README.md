@@ -1,6 +1,6 @@
 # SF Log Viewer
 
-[![VS Code Marketplace](https://img.shields.io/badge/VS%20Code-Marketplace-blue)](https://marketplace.visualstudio.com/)
+[![VS Code Marketplace](https://img.shields.io/badge/VS%20Code-Marketplace-blue)](https://marketplace.visualstudio.com/items?itemName=pettll.sf-log-viewer)
 
 Seamlessly view, filter, sort, and download Salesforce Apex logs across your locally authenticated orgs directly inside Visual Studio Code.
 
@@ -111,11 +111,11 @@ If the extension cannot locate your `sf` binary (e.g., when using `nvm` or custo
 
 Found a bug, missing feature, or have feedback?
 
-* **Source Code:** [GitHub Repository](https://www.google.com/search?q=https://github.com/pettll/sf-log-viewer)
-* **Issue Tracker:** [Report an Issue](https://www.google.com/search?q=https://github.com/pettll/sf-log-viewer/issues)
+* **Source Code:** [GitHub Repository](https://github.com/pettll/sf-log-viewer)
+* **Issue Tracker:** [Report an Issue](https://github.com/pettll/sf-log-viewer/issues)
 
 ---
 
 ## License
 
-[MIT](https://www.google.com/search?q=LICENSE)
+[MIT](LICENSE)
