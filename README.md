@@ -1,260 +1,121 @@
 # SF Log Viewer
 
-SF Log Viewer is a Visual Studio Code extension for viewing Salesforce Apex logs across locally authenticated Salesforce CLI orgs.
+[![VS Code Marketplace](https://img.shields.io/badge/VS%20Code-Marketplace-blue)](https://marketplace.visualstudio.com/)
 
-The extension uses the local Salesforce CLI authentication already available on the developer machine. Users do not need to paste Salesforce access tokens into VS Code.
+Seamlessly view, filter, sort, and download Salesforce Apex logs across your locally authenticated orgs directly inside Visual Studio Code.
 
-## Features
+Powered by your existing Salesforce CLI (`sf`) authentication—no need to manage, copy, or paste Salesforce access tokens into VS Code.
 
-- Lists locally authenticated Salesforce orgs from the Salesforce CLI.
+---
 
-- Lets the user select one active org from the extension side panel.
+## Key Features
 
-- Fetches recent Apex logs from the selected org through the Salesforce Tooling API.
+- **Zero-Token Auth:** Leverages your local Salesforce CLI authentication out of the box.
+- **Org Switching:** Easily switch between authenticated dev hubs, scratch orgs, and sandboxes from the side panel.
+- **Advanced Filtering & Sorting:** Filter logs by date range, user, or general text. Sort by start time, duration, status, operation, size, or user.
+- **Trace Flag Management:** Search Salesforce users and create or extend `USER_DEBUG` trace flags directly from VS Code.
+- **Log Downloads:** Export individual logs or batch-download all current logs with a auto-generated metadata index (`apex-log-index.json`).
+- **Native Log Viewer:** Opens full Apex log bodies in native VS Code editor tabs for quick reading and debugging.
 
-- Opens Apex log bodies directly inside VS Code.
-
-- Filters logs by date range, user and general search text.
-
-- Sorts logs by start time, user, operation, status, duration or size.
-
-- Downloads a single Apex log to a chosen file location.
-
-- Downloads all currently loaded Apex logs to a chosen folder.
-
-- Creates or extends user trace flags.
-
-- Queries available `DebugLevel` records from the selected org.
-
-- Searches active Salesforce users by name or username.
-
-- Lets the user choose the user, debug level, start time and end time for `USER_DEBUG` trace flags.
+---
 
 ## Requirements
 
-- Visual Studio Code or Visual Studio Code Insiders.
+Before using this extension, make sure you have:
 
-- Node.js.
-
-- npm.
-
-- Salesforce CLI installed as `sf`.
-
-- At least one authenticated Salesforce org.
-
-Check the Salesforce CLI:
-
-which sf
-sf --version
-
-Authenticate an org if needed:
-
-sf org login web --alias my-org
-sf org list --json
-
-## Project structure
-
-```
-sf-log-viewer/
-├── .vscode/
-│ ├── launch.json
-│ └── tasks.json
-├── src/
-│ ├── extension.ts
-│ ├── logDocumentProvider.ts
-│ ├── logFilterView.ts
-│ ├── sfCli.ts
-│ ├── sfClient.ts
-│ ├── traceUserView.ts
-│ ├── treeProviders.ts
-│ └── types.ts
-├── package.json
-├── tsconfig.json
-├── README.md
-├── .gitignore
-└── .vscodeignore
-```
-
-## Development setup
-
-Install dependencies:
-
-`npm install`
-
-Compile:
-
-`npm run compile`
-
-Open in VS Code Insiders:
-
-`code-insiders .`
-
-Or open in VS Code:
-
-`code .`
-
-Press F5 to launch the Extension Development Host.
-
-## VS Code launch configuration
-
-If Salesforce CLI is installed through nvm, VS Code may not inherit the same terminal PATH. Set the Salesforce CLI path and Node path in .vscode/launch.json.
-
-Example:
-
-```json
-{
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "name": "Run Extension",
-      "type": "extensionHost",
-      "request": "launch",
-      "args": ["--extensionDevelopmentPath=${workspaceFolder}"],
-      "outFiles": ["${workspaceFolder}/out/**/*.js"],
-      "preLaunchTask": "npm: compile",
-      "env": {
-        "SF_LOG_VIEWER_SF_PATH": "/Users/pemuller/.nvm/versions/node/v24.11.1/bin/sf",
-        "SF_LOG_VIEWER_NODE_PATH": "/Users/pemuller/.nvm/versions/node/v24.11.1/bin"
-      }
-    }
-  ]
-}
-```
-
-## Main commands
-
-Open the Command Palette and search for SF Logs.
-
-```
-SF Logs: Refresh Orgs
-SF Logs: Select Org
-SF Logs: Refresh Logs
-SF Logs: Open Log
-SF Logs: Download Log
-SF Logs: Download All Logs
-SF Logs: Show Filters
-SF Logs: Clear Filters
-SF Logs: Create or Extend Trace Flag
-SF Logs: Open Selected Org
-```
-
-## Extension views
-
-The extension adds an SF Logs activity bar item with these views:
-
-1. `Authenticated Orgs`
-
-2. `Trace User`
-
-3. `Filters and Sort`
-
-4. `Apex Logs`
-
-## Using the extension
-
-1. Run `SF Logs: Refresh Orgs`.
-
-2. Select an org from `Authenticated Orgs`.
-
-3. Use `Trace User` to create or extend a user trace flag.
-
-4. Use `Filters and Sort` to choose date range, user/general filter, sort field and sort direction.
-
-5. Run `SF Logs: Refresh Logs` or apply filters from the panel.
-
-6. Select a log under `Apex Logs` to open it.
-
-7. Use `Download Log` to save one log.
-
-8. Use `Download All Logs` to save all currently loaded logs.
-
-## Trace User workflow
-
-1. Select an org.
-
-2. In `Trace User`, select `Load Debug Levels`.
-
-3. Search for a user by name or username.
-
-4. Select a user from the dropdown.
-
-5. Select a debug level from the dropdown.
-
-6. Set start and end time.
-
-7. Select `Create or Extend Trace`.
-
-The extension creates or extends a USER_DEBUG trace flag for the selected user.
-
-## Filters and Sort workflow
-
-Use the `Filters and Sort` panel to set:
-
-- From date.
-
-- To date.
-
-- User text filter.
-
-- General text filter.
-
-- Sort field.
-
-- Sort direction.
-
-- Maximum number of logs.
-
-Available sort fields:
-
-- Start time.
-
-- User.
-
-- Operation.
-
-- Status.
-
-- Duration.
-
-- Size.
-
-## Downloaded log files
-
-Single log download:
-
-`<chosen-file>.log`
-
-Download all logs:
-
-```
-<chosen-folder>/
-apex-log-index.json
-<start-time> - <user> - <operation> - <log-id>.log
-```
-
-The apex-log-index.json file contains metadata for the downloaded result set.
-
-## Packaging as VSIX
-
-Install the packaging tool if needed:
-
-`npm install --save-dev @vscode/vsce`
-
-Package:
-
+* **Salesforce CLI (`sf`)** installed and available in your system path.
+* At least **one authenticated Salesforce org** via the CLI:
 ```bash
-npm run compile
-npx vsce package
+  sf org login web --alias my-org
 ```
 
-Or use the project script:
+---
 
-`npm run package:vsix:dist`
+## Quick Start
 
-Install locally in VS Code Insiders:
+1. **Select an Org:** Open the **SF Logs** activity bar panel and choose your target org from the **Authenticated Orgs** view.
+2. **Set a Trace Flag (Optional):** Go to the **Trace User** view to set up a `USER_DEBUG` trace flag for your user.
+3. **Fetch & View Logs:** Open the **Apex Logs** view, click **Refresh Logs**, and select any log to view its raw body.
+4. **Filter & Sort:** Adjust date ranges, user filters, and sorting preferences directly from the **Filters and Sort** panel.
 
-`code-insiders --install-extension dist/sf-log-viewer-0.0.1.vsix --force`
+---
 
-Install locally in VS Code:
+## Extension Views
 
-`code --install-extension dist/sf-log-viewer-0.0.1.vsix --force`
+This extension adds an **SF Logs** icon to the Activity Bar with four primary views:
+
+| View | Description |
+| --- | --- |
+| **Authenticated Orgs** | Lists all Salesforce CLI orgs currently authenticated on your machine. |
+| **Trace User** | Interface to search users, select debug levels, and extend/create trace flags. |
+| **Filters and Sort** | Controls for log limits, date ranges, text filters, and field sorting. |
+| **Apex Logs** | Interactive list of fetched Apex logs ready for opening or downloading. |
+
+---
+
+## Workflows
+
+### Setting Up a Trace Flag
+
+1. Select an active org in **Authenticated Orgs**.
+2. Under **Trace User**, click **Load Debug Levels**.
+3. Search for a Salesforce user by name or username and select them.
+4. Choose a **Debug Level** and set the start/end duration.
+5. Click **Create or Extend Trace** to activate log generation for that user.
+
+### Batch Downloading Logs
+
+When downloading all loaded logs via `SF Logs: Download All Logs`, the extension structures the destination folder as:
+
+```text
+<chosen-folder>/
+├── apex-log-index.json
+├── 2026-08-19T10-15-00 - JSmith - ExecAnon - 07L...log
+└── ...
+```
+
+The `apex-log-index.json` file includes full metadata for all exported logs for easy reference.
+
+---
+
+## Commands
+
+Access these commands at any time via the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`):
+
+| Command Title | Command Identifier | Description |
+| --- | --- | --- |
+| **SF Logs: Select Org** | `sfLogViewer.selectOrg` | Set the active Salesforce org for log operations. |
+| **SF Logs: Refresh Orgs** | `sfLogViewer.refreshOrgs` | Reload local Salesforce CLI org authentications. |
+| **SF Logs: Refresh Logs** | `sfLogViewer.refreshLogs` | Fetch recent Apex logs via the Salesforce Tooling API. |
+| **SF Logs: Open Log** | `sfLogViewer.openLog` | Open the body of the selected log in an editor tab. |
+| **SF Logs: Download Log** | `sfLogViewer.downloadLog` | Save a single Apex log to your local file system. |
+| **SF Logs: Download All Logs** | `sfLogViewer.downloadAllLogs` | Export all currently loaded Apex logs and index metadata. |
+| **SF Logs: Show Filters** | `sfLogViewer.showFilters` | Open the log filtering and sorting configuration panel. |
+| **SF Logs: Clear Filters** | `sfLogViewer.clearFilters` | Reset all active log filters and search fields. |
+| **SF Logs: Create/Extend Trace** | `sfLogViewer.createTraceFlag` | Create or update a `USER_DEBUG` trace flag. |
+| **SF Logs: Open Selected Org** | `sfLogViewer.openSelectedOrg` | Open the active org in your web browser via `sf org open`. |
+
+---
+
+## Troubleshooting
+
+### Salesforce CLI Not Found
+
+If the extension cannot locate your `sf` binary (e.g., when using `nvm` or custom terminal PATHs), configure the CLI path explicitly in your VS Code User Settings (`Cmd+,` or `Ctrl+,`):
+
+* `sfLogViewer.sfPath`: Set the absolute path to your `sf` executable (e.g., `/usr/local/bin/sf`).
+
+---
+
+## Contributing & Issues
+
+Found a bug, missing feature, or have feedback?
+
+* **Source Code:** [GitHub Repository](https://www.google.com/search?q=https://github.com/pettll/sf-log-viewer)
+* **Issue Tracker:** [Report an Issue](https://www.google.com/search?q=https://github.com/pettll/sf-log-viewer/issues)
+
+---
+
+## License
+
+[MIT](https://www.google.com/search?q=LICENSE)
