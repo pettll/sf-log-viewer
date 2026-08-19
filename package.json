@@ -2,7 +2,7 @@
   "name": "sf-log-viewer",
   "displayName": "SF Log Viewer",
   "description": "View Salesforce Apex logs from locally authenticated Salesforce CLI orgs and manage user trace flags.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "pettll",
   "license": "MIT",
   "icon": "media/icon.png",
