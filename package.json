@@ -1,0 +1,186 @@
+{
+  "name": "sf-log-viewer",
+  "displayName": "SF Log Viewer",
+  "description": "View Salesforce Apex logs from locally authenticated Salesforce CLI orgs and manage user trace flags.",
+  "version": "0.0.1",
+  "publisher": "pettll",
+  "license": "MIT",
+  "icon": "mediea/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pettll/sf-log-viewer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pettll/sf-log-viewer/issues"
+  },
+  "homepage": "https://github.com/pettll/sf-log-viewer#readme",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "files": [
+    "out",
+    "README.md",
+    "LICENSE",
+    "package.json"
+  ],
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onView:sfLogs.orgs",
+    "onView:sfLogs.trace",
+    "onView:sfLogs.filters",
+    "onView:sfLogs.logs",
+    "onCommand:sfLogs.refreshOrgs",
+    "onCommand:sfLogs.selectOrg",
+    "onCommand:sfLogs.refreshLogs",
+    "onCommand:sfLogs.openLog",
+    "onCommand:sfLogs.downloadLog",
+    "onCommand:sfLogs.downloadAllLogs",
+    "onCommand:sfLogs.filterLogs",
+    "onCommand:sfLogs.clearFilter",
+    "onCommand:sfLogs.createOrExtendTraceFlag",
+    "onCommand:sfLogs.openSelectedOrg"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "sfLogs",
+          "title": "SF Logs",
+          "icon": "$(bug)"
+        }
+      ]
+    },
+    "views": {
+      "sfLogs": [
+        {
+          "id": "sfLogs.orgs",
+          "name": "Authenticated Orgs"
+        },
+        {
+          "id": "sfLogs.trace",
+          "name": "Trace User",
+          "type": "webview"
+        },
+        {
+          "id": "sfLogs.filters",
+          "name": "Filters and Sort",
+          "type": "webview"
+        },
+        {
+          "id": "sfLogs.logs",
+          "name": "Apex Logs"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "sfLogs.refreshOrgs",
+        "title": "SF Logs: Refresh Orgs"
+      },
+      {
+        "command": "sfLogs.selectOrg",
+        "title": "SF Logs: Select Org"
+      },
+      {
+        "command": "sfLogs.refreshLogs",
+        "title": "SF Logs: Refresh Logs"
+      },
+      {
+        "command": "sfLogs.openLog",
+        "title": "SF Logs: Open Log"
+      },
+      {
+        "command": "sfLogs.downloadLog",
+        "title": "SF Logs: Download Log"
+      },
+      {
+        "command": "sfLogs.downloadAllLogs",
+        "title": "SF Logs: Download All Logs"
+      },
+      {
+        "command": "sfLogs.filterLogs",
+        "title": "SF Logs: Show Filters"
+      },
+      {
+        "command": "sfLogs.clearFilter",
+        "title": "SF Logs: Clear Filters"
+      },
+      {
+        "command": "sfLogs.createOrExtendTraceFlag",
+        "title": "SF Logs: Create or Extend Trace Flag"
+      },
+      {
+        "command": "sfLogs.openSelectedOrg",
+        "title": "SF Logs: Open Selected Org"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "sfLogs.refreshOrgs",
+          "when": "view == sfLogs.orgs",
+          "group": "navigation"
+        },
+        {
+          "command": "sfLogs.refreshLogs",
+          "when": "view == sfLogs.logs",
+          "group": "navigation"
+        },
+        {
+          "command": "sfLogs.downloadAllLogs",
+          "when": "view == sfLogs.logs",
+          "group": "navigation@2"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "sfLogs.openLog",
+          "when": "view == sfLogs.logs && viewItem == sfLog",
+          "group": "inline"
+        },
+        {
+          "command": "sfLogs.downloadLog",
+          "when": "view == sfLogs.logs && viewItem == sfLog",
+          "group": "inline@2"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "SF Log Viewer",
+      "properties": {
+        "sfLogs.apiVersion": {
+          "type": "string",
+          "default": "60.0",
+          "description": "Salesforce API version used for Tooling API calls."
+        },
+        "sfLogs.defaultLogLimit": {
+          "type": "number",
+          "default": 100,
+          "description": "Default number of ApexLog records to retrieve per org."
+        },
+        "sfLogs.defaultTraceMinutes": {
+          "type": "number",
+          "default": 60,
+          "description": "Default trace flag duration in minutes."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "vscode:prepublish": "npm run compile",
+    "package:vsix": "npm run compile && npx vsce package",
+    "package:vsix:dist": "mkdir -p dist && npm run compile && npx vsce package -o dist/sf-log-viewer-0.0.1.vsix"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.10",
+    "@types/vscode": "^1.90.0",
+    "@vscode/vsce": "^3.2.2",
+    "typescript": "^5.5.3"
+  }
+}

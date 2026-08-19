@@ -1,0 +1,12 @@
+# Dependencies
+# Downloaded packages; run 'npm install' to recreate locally
+node_modules/
+
+# Build and Distribution Outputs
+# Compiled assets and extension build packages (.vsix)
+out/
+*.vsix
+
+# Operating System Files
+# macOS folder metadata
+.DS_Store
